@@ -73,6 +73,7 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:3.14.0"
     testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.14.0"
     runtime 'org.postgresql:postgresql:9.4-1205-jdbc42'
+    compile fileTree(dir: 'lib', include: '*.jar')
 }
 
 bootRun {

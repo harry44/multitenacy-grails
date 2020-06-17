@@ -5,7 +5,7 @@ import grails.testing.web.controllers.ControllerUnitTest
 import grails.validation.ValidationException
 import spock.lang.*
 
-class UserControllerSpec extends Specification implements ControllerUnitTest<UserController>, DomainUnitTest<User> {
+class UserControllerSpec extends Specification implements ControllerUnitTest<UserController>, DomainUnitTest<MRUser> {
 
     def populateValidParams(params) {
         assert params != null
@@ -52,7 +52,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
     void "Test the save action correctly persists"() {
         given:
         controller.userService = Mock(UserService) {
-            1 * save(_ as User)
+            1 * save(_ as MRUser)
         }
 
         when:"The save action is executed with a valid instance"
@@ -60,7 +60,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
         populateValidParams(params)
-        def user = new User(params)
+        def user = new MRUser(params)
         user.id = 1
 
         controller.save(user)
@@ -73,7 +73,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
     void "Test the save action with an invalid instance"() {
         given:
         controller.userService = Mock(UserService) {
-            1 * save(_ as User) >> { User user ->
+            1 * save(_ as MRUser) >> { MRUser user ->
                 throw new ValidationException("Invalid instance", user.errors)
             }
         }
@@ -81,7 +81,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
         when:"The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
-        def user = new User()
+        def user = new MRUser()
         controller.save(user)
 
         then:"The create view is rendered again with the correct model"
@@ -105,14 +105,14 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
     void "Test the show action with a valid id"() {
         given:
         controller.userService = Mock(UserService) {
-            1 * get(2) >> new User()
+            1 * get(2) >> new MRUser()
         }
 
         when:"A domain instance is passed to the show action"
         controller.show(2)
 
         then:"A model is populated containing the domain instance"
-        model.user instanceof User
+        model.user instanceof MRUser
     }
 
     void "Test the edit action with a null id"() {
@@ -131,14 +131,14 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
     void "Test the edit action with a valid id"() {
         given:
         controller.userService = Mock(UserService) {
-            1 * get(2) >> new User()
+            1 * get(2) >> new MRUser()
         }
 
         when:"A domain instance is passed to the show action"
         controller.edit(2)
 
         then:"A model is populated containing the domain instance"
-        model.user instanceof User
+        model.user instanceof MRUser
     }
 
 
@@ -156,7 +156,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
     void "Test the update action correctly persists"() {
         given:
         controller.userService = Mock(UserService) {
-            1 * save(_ as User)
+            1 * save(_ as MRUser)
         }
 
         when:"The save action is executed with a valid instance"
@@ -164,7 +164,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
         populateValidParams(params)
-        def user = new User(params)
+        def user = new MRUser(params)
         user.id = 1
 
         controller.update(user)
@@ -177,7 +177,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
     void "Test the update action with an invalid instance"() {
         given:
         controller.userService = Mock(UserService) {
-            1 * save(_ as User) >> { User user ->
+            1 * save(_ as MRUser) >> { MRUser user ->
                 throw new ValidationException("Invalid instance", user.errors)
             }
         }
@@ -185,7 +185,7 @@ class UserControllerSpec extends Specification implements ControllerUnitTest<Use
         when:"The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
-        controller.update(new User())
+        controller.update(new MRUser())
 
         then:"The edit view is rendered again with the correct model"
         model.user != null

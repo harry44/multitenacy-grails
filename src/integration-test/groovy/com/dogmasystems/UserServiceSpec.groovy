@@ -34,7 +34,7 @@ class UserServiceSpec extends Specification {
         setupData()
 
         when:
-        List<User> userList = userService.list(max: 2, offset: 2)
+        List<MRUser> userList = userService.list(max: 2, offset: 2)
 
         then:
         userList.size() == 2
@@ -65,7 +65,7 @@ class UserServiceSpec extends Specification {
     void "test save"() {
         when:
         assert false, "TODO: Provide a valid instance to save"
-        User user = new User()
+        MRUser user = new MRUser()
         userService.save(user)
 
         then:

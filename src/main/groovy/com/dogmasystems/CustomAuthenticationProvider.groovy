@@ -3,7 +3,6 @@ package com.dogmasystems
 import grails.plugin.springsecurity.userdetails.GrailsUser
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.BadCredentialsException
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.GrantedAuthority
@@ -18,7 +17,7 @@ class CustomAuthenticationProvider implements AuthenticationProvider{
         if (!(credentials instanceof String)) {
             return null;
         }
-        User user=customUserDetailsService.loadUserByUsername(name)
+        MRUser user=customUserDetailsService.loadUserByUsername(name)
         GrailsUser userDetails=new CustomUserDetails(user.username,user.password,user.enabled,user.getAccountExpired(),user.passwordExpired,user.accountLocked,user.authorities,user.id)
         if (!userDetails) {
             throw new BadCredentialsException("Authentication failed for " + name);

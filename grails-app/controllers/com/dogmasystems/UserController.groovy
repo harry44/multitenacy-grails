@@ -22,10 +22,10 @@ class UserController {
 
     def create() {
 
-        respond new MRUser(params),model: [roleList:Role.list()]
+        respond new User(params),model: [roleList:Role.list()]
     }
 
-    def save(MRUser user) {
+    def save(User user) {
         if (user == null) {
             notFound()
             return
@@ -65,7 +65,7 @@ class UserController {
         respond userService.get(id)
     }
 
-    def update(MRUser user) {
+    def update(User user) {
         if (user == null) {
             notFound()
             return

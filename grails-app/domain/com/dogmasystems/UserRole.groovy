@@ -13,7 +13,7 @@ class UserRole implements Serializable, MultiTenant<UserRole> {
 
 	private static final long serialVersionUID = 1
 
-	MRUser user
+	User user
 	Role role
 	Date dateCreated, lastUpdated
 
@@ -46,24 +46,24 @@ class UserRole implements Serializable, MultiTenant<UserRole> {
 
 	private static DetachedCriteria criteriaFor(long userId, long roleId) {
 		UserRole.where {
-			user == MRUser.load(userId) &&
+			user == User.load(userId) &&
 			role == Role.load(roleId)
 		}
 	}
 
-	static UserRole create(MRUser user, Role role, boolean flush = false) {
+	static UserRole create(User user, Role role, boolean flush = false) {
 		def instance = new UserRole(user: user, role: role)
 		instance.save(flush: flush)
 		instance
 	}
 
-	static boolean remove(MRUser u, Role r) {
+	static boolean remove(User u, Role r) {
 		if (u != null && r != null) {
 			UserRole.where { user == u && role == r }.deleteAll()
 		}
 	}
 
-	static int removeAll(MRUser u) {
+	static int removeAll(User u) {
 		u == null ? 0 : UserRole.where { user == u }.deleteAll() as int
 	}
 

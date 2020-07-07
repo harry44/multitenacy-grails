@@ -3,13 +3,15 @@ package com.dogmasystems
 import grails.gorm.multitenancy.CurrentTenant
 import grails.gorm.services.Service
 
+import javax.transaction.Transactional
+
 @CurrentTenant
-@Service(MRUser)
+@Service(User)
 interface UserService {
 
-    MRUser get(Serializable id)
+    User get(Serializable id)
 
-    List<MRUser> list(Map args)
+    List<User> list(Map args)
 
     Long count()
 

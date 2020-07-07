@@ -26,7 +26,7 @@ class RegisterController {
             return
         } else {
             try {
-                def user = MRUser.findByUsername(params.username)?: userDataService.save(params,new MRUser())
+                def user = User.findByUsername(params.username)?: userDataService.save(params,new User())
                 def role = Role.get(params.role.id)
                 if(user && role) {
                     //UserRole userRole=new UserRole()

@@ -1,70 +1,44 @@
 package com.dogmasystems
-import com.dogmasystems.myrent.db.MRLocation
-import com.dogmasystems.myrent.db.MRReservationSource
-import com.dogmasystems.myrent.db.MRReservation
 
-class User implements Serializable{
+import grails.gorm.MultiTenant
+import grails.gorm.multitenancy.CurrentTenant
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+import grails.compiler.GrailsCompileStatic
 
-	transient springSecurityService
+@GrailsCompileStatic
+@EqualsAndHashCode(includes='username')
+@ToString(includes='username', includeNames=true, includePackage=false)
+class User implements Serializable, MultiTenant<User> {
 
-	String username
-	String password
-    String email
-    MRLocation location
-	Integer myrentUserId
-	boolean enabled = true
-	boolean accountExpired
-	boolean accountLocked
-	boolean passwordExpired
-	
-	static auditable = true
-	Date dateCreated, lastUpdated
-	SshUser sshUser
+    private static final long serialVersionUID = 1
 
-	static belongsTo = [tenant:Tenant]
-	static hasMany = [dswpUsersFonti:MRReservationSource, reservationId : MRReservation ]
+    String username
+    String password
+    String fullname
+    boolean enabled = true
+    boolean accountExpired
+    boolean accountLocked
+    boolean passwordExpired
+    Integer tenantId
+    Date dateCreated,lastUpdated
+    Set<Role> getAuthorities() {
+        (UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
+    }
 
-	static transients = ['springSecurityService']
+    static constraints = {
+        password nullable: false, blank: false, password: true
+        username nullable: false, blank: false, unique: true
+        fullname nullable: true, blank: true
+    }
 
-	static constraints = {
-		username blank: false, unique: 'tenant'
-		password blank: false
-		sshUser nullable: true
-        location nullable: true
-		reservationId nullable: true
-		myrentUserId nullable: true
+    static mapping = {
+        id generator:'sequence', params:[sequence:'user_seq']
+	    table(name:"dswp_users")
+        password column: '`password`'
 
-        email email: true, nullable: true, unique: true
-		//myrentUserId nullable: true
-	}
-
-	static mapping = {
-		cache true
-		tenant cache: true, lazy: false
-		table("dswp_users")
-		password column: '`password`'
-		id generator:'sequence', params:[sequence:'user_seq']
-		//reservationId column: "mrreservation_id",sqlType: "int4"
-		//myrentUserId sqlType: "int4"
-	}
-
-	Set<Role> getAuthorities() {
-		UserRole.findAllByUser(this).collect { it.role }
-	}
-
-	def beforeInsert() {
-		encodePassword()
-	}
-
-	def beforeUpdate() {
-		
-		if (isDirty('password')) {
-			println("Password changed")
-			encodePassword()
-		}
-	}
-
-	protected void encodePassword() {
-		password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
-	}
+    }
+    def beforeInsert(){
+        tenantId=1
+    }
 }

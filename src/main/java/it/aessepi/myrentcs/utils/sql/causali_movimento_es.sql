@@ -1,2 +1,0 @@
-INSERT INTO causali_movimento (id, descrizione, noleggio, prenotazione, trasferimento, riparazione, lavaggio, rifornimento) VALUES (1, 'ALQUILER', true, false, false, false, false, false);
-INSERT INTO causali_movimento (id, descrizione, noleggio, prenotazione, trasferimento, riparazione, lavaggio, rifornimento) VALUES (2, 'RESERVA', false, true, false, false, false, false);

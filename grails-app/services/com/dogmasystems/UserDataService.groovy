@@ -1,12 +1,14 @@
 package com.dogmasystems
 
 import grails.gorm.multitenancy.CurrentTenant
+import grails.gorm.multitenancy.Tenants
 import grails.gorm.services.Service
 import grails.gorm.transactions.Transactional
 import org.grails.orm.hibernate.HibernateDatastore
+import org.hibernate.SessionFactory
 import org.springframework.beans.factory.annotation.Autowired
 
-@Service(MRUser)
+@Service(User)
 @Transactional
 @CurrentTenant
 class UserDataService {
@@ -18,7 +20,7 @@ class UserDataService {
     }
     @CurrentTenant
     @Transactional
-    MRUser save(params, MRUser user){
+    User save(params,User user){
         DESEncrypter dencrypter = new DESEncrypter("utenti_myrent");
         user.properties=params
         println "password: "+dencrypter.encrypt(params.password)

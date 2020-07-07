@@ -1,1 +1,0 @@
-INSERT INTO currency (code,description,enabled,is_default,create_date,modify_date,id_user_created,id_user_last_modify) VALUES ('EUR','Euros',TRUE,TRUE,NOW(),NOW(),1,1);
